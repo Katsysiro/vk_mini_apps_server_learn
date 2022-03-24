@@ -11,11 +11,25 @@ const io = require('socket.io')(server, {
 const log = console.log
 
 // получаем обработчики событий
+const registerMessageHandlers = require('./handlers/messageHandlers')
+const registerUserHandlers = require('./handlers/userHandlers')
 
 // данная функция выполняется при подключении каждого сокета 
 // (обычно, один клиент = один сокет)
 const onConnection = (socket) => {
+    // выводим сообщение о подключении пользователя
+    log('User connected')
 
+    // регистрируем обработчики
+    // обратите внимание на передаваемые аргументы
+    registerMessageHandlers(io, socket)
+    registerUserHandlers(io, socket)
+
+    // обрабатываем отключение сокета-пользователя
+    socket.on('disconnect', function() {
+        // выводим сообщение
+        log('User disconnected')
+    })
 }
 
 // обрабатываем подключение
