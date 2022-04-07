@@ -1,5 +1,12 @@
+const fs = require( 'fs' )
+
+var options = {
+    key: fs.readFileSync('./privatekey.key'),
+    cert: fs.readFileSync('./certificate.crt')
+}
+
 // создаем HTTP-сервер
-const server = require('http').createServer()
+const server = require('https').createServer(options)
 
 // подключаем к серверу Socket.IO
 const io = require('socket.io')(server, {
