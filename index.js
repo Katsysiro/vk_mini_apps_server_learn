@@ -6,7 +6,7 @@ var options = {
 }
 
 // создаем HTTP-сервер
-const server = require('https').createServer(options)
+const server = require('http').createServer(/*options*/)
 
 // подключаем к серверу Socket.IO
 const io = require('socket.io')(server, {
