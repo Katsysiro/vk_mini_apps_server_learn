@@ -43,7 +43,9 @@ module.exports = (io, socket) => {
 
         // передаем сообщения пользователям, находящимся в комнате
         // синонимы - распространение, вещание, публикация
-        io.emit('messages', messages)
+        io
+        //.in(socket.roomId)
+        .emit('messages', messages)
     }
     
     // обрабатываем добавление сообщения

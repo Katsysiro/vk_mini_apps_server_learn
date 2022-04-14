@@ -20,6 +20,7 @@ const log = console.log
 // получаем обработчики событий
 const registerMessageHandlers = require('./handlers/messageHandlers')
 const registerUserHandlers = require('./handlers/userHandlers')
+const raceHandlers = require('./handlers/raceHandlers')
 
 // данная функция выполняется при подключении каждого сокета 
 // (обычно, один клиент = один сокет)
@@ -27,15 +28,34 @@ const onConnection = (socket) => {
     // выводим сообщение о подключении пользователя
     log('User connected')
 
+    /*socket.on('join', function(join) {
+        log('User join')
+        log(join)
+        socket.roomId = join.roomId
+        // присоединяемся к комнате (входим в нее)
+        socket.join(join.roomId)
+    })
+
+    socket.on('leave', function(leave) {
+        // выводим сообщение
+        log('User leave')
+        log(leave)
+        // покидаем комнату
+        socket.leave(leave.roomId)
+    })*/
+
     // регистрируем обработчики
     // обратите внимание на передаваемые аргументы
     registerMessageHandlers(io, socket)
     registerUserHandlers(io, socket)
+    raceHandlers(io, socket)
 
     // обрабатываем отключение сокета-пользователя
     socket.on('disconnect', function() {
         // выводим сообщение
         log('User disconnected')
+        // покидаем комнату
+        socket.leave(socket.roomId)
     })
 }
 
